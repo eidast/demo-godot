@@ -1,0 +1,20 @@
+# Godot 4
+.godot/
+
+# Imported translations (optional)
+*.translation
+
+# Mono / C# (not used here)
+.mono/
+data_*/
+mono_crash.*.json
+
+# Builds / exports
+export_presets.cfg
+export/
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+*~
