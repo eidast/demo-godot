@@ -12,9 +12,13 @@ mono_crash.*.json
 # Builds / exports
 export_presets.cfg
 export/
+build/
+*.idsig
 
 # OS / editor
 .DS_Store
 *.swp
 *.swo
 *~
+*.import
+*.uid
