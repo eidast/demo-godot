@@ -17,7 +17,7 @@ const HUD_BUTTON_PRESSED_COLOR := Color("1b2a1f")
 const HUD_TEXT_PRIMARY := Color("e7f9bf")
 const HUD_TEXT_SECONDARY := Color("9be06b")
 
-const PIXEL_FONT := preload("res://assets/fonts/Tiny5-Regular.ttf")
+const UI_FONT := preload("res://assets/fonts/VT323-Regular.ttf")
 
 @onready var simulation_timer: Timer = $SimulationTimer
 
@@ -37,10 +37,8 @@ var last_touched_cell := Vector2i(-1, -1)
 var generation_label: Label
 var live_cells_label: Label
 var play_pause_button: Button
-var step_button: Button
 var clear_button: Button
 var random_button: Button
-var seed_button: Button
 var back_button: Button
 var speed_label: Label
 var speed_slider: HSlider
@@ -96,27 +94,19 @@ func _build_ui() -> void:
 	top_row.add_theme_constant_override("separation", 8)
 	root.add_child(top_row)
 
-	step_button = _make_button(Vector2(108, 64), 24)
-	step_button.pressed.connect(step_simulation)
-	top_row.add_child(step_button)
-
-	play_pause_button = _make_button(Vector2(108, 64), 24)
+	play_pause_button = _make_button(Vector2(118, 64), 26)
 	play_pause_button.pressed.connect(_toggle_play_pause)
 	top_row.add_child(play_pause_button)
 
-	clear_button = _make_button(Vector2(108, 64), 24)
+	clear_button = _make_button(Vector2(118, 64), 26)
 	clear_button.pressed.connect(_on_clear_pressed)
 	top_row.add_child(clear_button)
 
-	random_button = _make_button(Vector2(124, 64), 24)
+	random_button = _make_button(Vector2(130, 64), 26)
 	random_button.pressed.connect(_on_random_pressed)
 	top_row.add_child(random_button)
 
-	seed_button = _make_button(Vector2(118, 64), 24)
-	seed_button.pressed.connect(_on_seed_pressed)
-	top_row.add_child(seed_button)
-
-	back_button = _make_button(Vector2(108, 64), 24)
+	back_button = _make_button(Vector2(108, 64), 26)
 	back_button.pressed.connect(_go_to_menu)
 	top_row.add_child(back_button)
 
@@ -150,14 +140,14 @@ func _make_button(min_size: Vector2, font_size: int) -> Button:
 	var button: Button = Button.new()
 	button.custom_minimum_size = min_size
 	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	button.add_theme_font_override("font", PIXEL_FONT)
+	button.add_theme_font_override("font", UI_FONT)
 	button.add_theme_font_size_override("font_size", font_size)
 	button.add_theme_color_override("font_color", HUD_TEXT_PRIMARY)
 	button.add_theme_color_override("font_hover_color", HUD_TEXT_PRIMARY)
 	button.add_theme_color_override("font_pressed_color", HUD_TEXT_PRIMARY)
 	button.add_theme_color_override("font_focus_color", HUD_TEXT_PRIMARY)
 	button.add_theme_color_override("font_outline_color", Color.BLACK)
-	button.add_theme_constant_override("outline_size", 0)
+	button.add_theme_constant_override("outline_size", 2)
 	button.add_theme_stylebox_override("normal", _make_button_stylebox(HUD_BUTTON_COLOR, HUD_BORDER_COLOR))
 	button.add_theme_stylebox_override("hover", _make_button_stylebox(HUD_BUTTON_HOVER_COLOR, HUD_BORDER_COLOR))
 	button.add_theme_stylebox_override("pressed", _make_button_stylebox(HUD_BUTTON_PRESSED_COLOR, HUD_BORDER_COLOR))
@@ -167,10 +157,11 @@ func _make_button(min_size: Vector2, font_size: int) -> Button:
 
 func _make_label(font_size: int, color: Color) -> Label:
 	var label: Label = Label.new()
-	label.add_theme_font_override("font", PIXEL_FONT)
+	label.add_theme_font_override("font", UI_FONT)
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_color_override("font_color", color)
 	label.add_theme_color_override("font_outline_color", Color.BLACK)
+	label.add_theme_constant_override("outline_size", 2)
 	return label
 
 
@@ -439,14 +430,10 @@ func _update_stats_labels() -> void:
 
 
 func _apply_translations() -> void:
-	if step_button != null:
-		step_button.text = GameSettings.get_text("step")
 	if clear_button != null:
 		clear_button.text = GameSettings.get_text("clear")
 	if random_button != null:
 		random_button.text = GameSettings.get_text("random")
-	if seed_button != null:
-		seed_button.text = GameSettings.get_text("seed")
 	if back_button != null:
 		back_button.text = GameSettings.get_text("back")
 	if speed_label != null:
@@ -472,11 +459,6 @@ func _on_clear_pressed() -> void:
 
 func _on_random_pressed() -> void:
 	randomize_grid()
-	_start_simulation()
-
-
-func _on_seed_pressed() -> void:
-	_seed_demo_pattern()
 	_start_simulation()
 
 
@@ -576,8 +558,16 @@ func _rebuild_board() -> void:
 
 	_initialize_grids()
 	_update_board_layout()
-	_seed_demo_pattern()
+	_seed_initial_state()
 	_start_simulation()
+
+
+func _seed_initial_state() -> void:
+	randomize_grid()
+	if live_cells == 0:
+		randomize_grid()
+	if live_cells == 0:
+		_seed_demo_pattern()
 
 
 func _update_safe_area() -> void:
@@ -587,7 +577,7 @@ func _update_safe_area() -> void:
 		"left": max(6, int(ceil(float(raw_insets["left"]) * 0.5)) + 2),
 		"top": max(6, int(ceil(float(raw_insets["top"]) * 0.5)) + 2),
 		"right": max(6, int(ceil(float(raw_insets["right"]) * 0.5)) + 2),
-		"bottom": 6,
+		"bottom": max(6, int(ceil(float(raw_insets["bottom"]) * 0.5)) + 2),
 	}
 	if hud_margin != null:
 		hud_margin.add_theme_constant_override("margin_left", safe_insets["left"])

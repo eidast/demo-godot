@@ -55,4 +55,4 @@ func _apply_safe_area() -> void:
 	root_margin.add_theme_constant_override("margin_left", max(8, int(ceil(insets["left"] * 0.5)) + 2))
 	root_margin.add_theme_constant_override("margin_top", max(10, int(ceil(insets["top"] * 0.5)) + 2))
 	root_margin.add_theme_constant_override("margin_right", max(8, int(ceil(insets["right"] * 0.5)) + 2))
-	root_margin.add_theme_constant_override("margin_bottom", 12)
+	root_margin.add_theme_constant_override("margin_bottom", max(10, int(ceil(insets["bottom"] * 0.5)) + 2))

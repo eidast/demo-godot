@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/WelcomeScreen.gd" id="1_q27ei"]
 [ext_resource type="FontFile" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_font"]
+[ext_resource type="FontFile" path="res://assets/fonts/VT323-Regular.ttf" id="3_font_body"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hero"]
 bg_color = Color(0.0784314, 0.101961, 0.0823529, 1)
@@ -130,8 +131,9 @@ theme_override_constants/separation = 18
 
 [node name="EraLabel" type="Label" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 23
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 32
+theme_override_constants/outline_size = 1
 modulate = Color(0.839216, 0.92549, 0.611765, 1)
 text = "JOHN HORTON CONWAY  1970"
 
@@ -144,8 +146,9 @@ text = "Game of Life"
 
 [node name="SubtitleLabel" type="Label" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 31
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 42
+theme_override_constants/outline_size = 1
 modulate = Color(0.596078, 0.87451, 0.423529, 1)
 text = "A pixel-art tribute to the cellular automaton"
 autowrap_mode = 3
@@ -168,49 +171,46 @@ theme_override_constants/separation = 18
 
 [node name="DescriptionLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 26
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 32
+theme_override_constants/outline_size = 1
 modulate = Color(0.913725, 0.956863, 0.866667, 1)
 text = "A zero-player game where a single seed pattern can produce generations, oscillators, and spaceships across an infinite grid."
 autowrap_mode = 3
 
-[node name="TributeLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 23
-modulate = Color(0.72549, 0.862745, 0.643137, 1)
-text = "Based on Conway's Game of Life, devised by John Horton Conway in 1970. This cover links to the historical Wikipedia reference."
-autowrap_mode = 3
-
 [node name="RulesTitleLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 26
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 34
+theme_override_constants/outline_size = 1
 modulate = Color(0.905882, 0.980392, 0.74902, 1)
 text = "Simplified rules"
 
 [node name="RulesBodyLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 23
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 30
+theme_override_constants/outline_size = 1
 modulate = Color(0.839216, 0.92549, 0.611765, 1)
 text = "1. A live cell with fewer than 2 neighbours dies.\n2. A live cell with 2 or 3 neighbours survives.\n3. A live cell with more than 3 neighbours dies.\n4. A dead cell with exactly 3 neighbours becomes alive."
 autowrap_mode = 3
 
 [node name="ControlsLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 23
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 30
+theme_override_constants/outline_size = 1
 modulate = Color(0.839216, 0.92549, 0.611765, 1)
-text = "Mobile: tap cells to activate them. Use the panel to pause, step, clear, or seed classic patterns."
+text = "Mobile: tap cells to activate them. Use the panel to play, pause, clear, or randomize the simulation."
 autowrap_mode = 3
 
 [node name="ReferenceButton" type="Button" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 23
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 30
+theme_override_constants/outline_size = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
@@ -225,8 +225,9 @@ theme_override_constants/separation = 14
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 26
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 34
+theme_override_constants/outline_size = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
@@ -237,8 +238,9 @@ text = "Start"
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 26
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 34
+theme_override_constants/outline_size = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
@@ -249,8 +251,9 @@ text = "Settings"
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 26
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 34
+theme_override_constants/outline_size = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")

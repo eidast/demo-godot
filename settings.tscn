@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/SettingsScreen.gd" id="1_gl5lr"]
 [ext_resource type="FontFile" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_font"]
+[ext_resource type="FontFile" path="res://assets/fonts/VT323-Regular.ttf" id="3_font_body"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 bg_color = Color(0.0901961, 0.117647, 0.0980392, 1)
@@ -106,21 +107,23 @@ text = "Configuracion"
 
 [node name="LanguageLabel" type="Label" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 30
+theme_override_constants/outline_size = 1
 modulate = Color(0.72549, 0.862745, 0.643137, 1)
 text = "Language"
 
 [node name="LanguageSelector" type="OptionButton" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
 custom_minimum_size = Vector2(0, 68)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 30
 
 [node name="LanguageNoteLabel" type="Label" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 26
+theme_override_constants/outline_size = 1
 modulate = Color(0.839216, 0.92549, 0.611765, 1)
 text = "The change applies immediately to menus and to the in-game interface."
 autowrap_mode = 3
@@ -128,8 +131,9 @@ autowrap_mode = 3
 [node name="BackButton" type="Button" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
 custom_minimum_size = Vector2(0, 68)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 20
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 30
+theme_override_constants/outline_size = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")

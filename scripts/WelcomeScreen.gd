@@ -7,7 +7,6 @@ const CONWAY_REFERENCE_URL := "https://en.wikipedia.org/wiki/Conway%27s_Game_of_
 @onready var title_label: Label = $Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn/TitleLabel
 @onready var subtitle_label: Label = $Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn/SubtitleLabel
 @onready var description_label: Label = $Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn/DescriptionLabel
-@onready var tribute_label: Label = $Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn/TributeLabel
 @onready var rules_title_label: Label = $Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn/RulesTitleLabel
 @onready var rules_body_label: Label = $Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn/RulesBodyLabel
 @onready var controls_label: Label = $Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn/ControlsLabel
@@ -32,7 +31,6 @@ func _refresh_texts() -> void:
 	title_label.text = GameSettings.get_text("welcome_title")
 	subtitle_label.text = GameSettings.get_text("welcome_subtitle")
 	description_label.text = GameSettings.get_text("welcome_description")
-	tribute_label.text = GameSettings.get_text("welcome_tribute")
 	rules_title_label.text = GameSettings.get_text("welcome_rules_title")
 	rules_body_label.text = GameSettings.get_text("welcome_rules_body")
 	controls_label.text = GameSettings.get_text("welcome_controls")
@@ -60,7 +58,7 @@ func _apply_safe_area() -> void:
 	root_margin.add_theme_constant_override("margin_left", max(8, int(ceil(insets["left"] * 0.5)) + 2))
 	root_margin.add_theme_constant_override("margin_top", max(10, int(ceil(insets["top"] * 0.5)) + 2))
 	root_margin.add_theme_constant_override("margin_right", max(8, int(ceil(insets["right"] * 0.5)) + 2))
-	root_margin.add_theme_constant_override("margin_bottom", 12)
+	root_margin.add_theme_constant_override("margin_bottom", max(10, int(ceil(insets["bottom"] * 0.5)) + 2))
 
 
 func _on_exit_button_pressed() -> void:

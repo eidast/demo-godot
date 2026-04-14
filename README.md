@@ -14,7 +14,10 @@ The project currently includes:
 - A settings screen with language selection.
 - A main gameplay scene for the cellular automaton.
 - A dynamic board that keeps cell size stable while adapting rows and columns to the available viewport space.
-- Fixed seed patterns for deterministic visual verification.
+- A random live starting state when gameplay opens.
+- A hybrid retro typography setup:
+  - `Tiny5` for the main title treatment
+  - `VT323` for readable body copy, buttons, and the in-game HUD
 - Local Android export support and emulator testing.
 
 ## Running the project
@@ -36,17 +39,16 @@ Godot will open a separate game window. That window is the actual running game.
 ### What you should see
 
 - First, a welcome screen with a retro pixel-art presentation.
-- Then, after starting the game, a visible board with seeded Conway patterns.
-- A HUD at the top with controls for stepping, playing, clearing, randomizing, reseeding, changing speed, and returning to the menu.
+- Then, after starting the game, a visible random board that starts simulating immediately.
+- A HUD at the top with controls for play/pause, clearing, randomizing, changing speed, and returning to the menu.
 
 ### Quick verification
 
 1. Press **Start** on the welcome screen.
 2. Confirm that the board shows live cells immediately.
-3. Press **Step** a few times and watch the board change.
-4. Press **Play** or **Pause** to control continuous simulation.
-5. Use **Pattern** to restore the fixed demo seeds.
-6. Use **Clear** to empty the board or **Random** to repopulate it.
+3. Press **Play** or **Pause** to control continuous simulation.
+4. Use **Clear** to empty the board or **Random** to repopulate it.
+5. Confirm that the board reacts to touch input.
 
 To close the game window, close that window directly or return to the editor and press **Stop** (`F8`).
 
@@ -64,10 +66,8 @@ This opens the editor with the project loaded. Press `F5` to run the game.
 ## Controls
 
 - **Left click / touch**: toggle or paint cells.
-- **Step**: advance one generation.
 - **Play / Pause**: run or stop continuous simulation.
 - **Clear / Random**: empty the board or fill it randomly.
-- **Pattern**: reseed the deterministic demo patterns.
 - **Menu**: return to the welcome screen.
 - Keyboard shortcuts:
   - `Space`: play/pause
@@ -85,7 +85,7 @@ The board implementation follows these principles:
 - Simulation uses two buffers:
   - `current_grid` for the current generation
   - `next_grid` for the next generation calculation
-- Startup uses fixed seed patterns so the board is visually verifiable without relying on randomness.
+- Startup uses a random seeded board with a fallback to a deterministic pattern only if a random seed ever ends up empty.
 
 This makes debugging easier because rendering issues and simulation issues can be tested with deterministic patterns.
 
@@ -102,6 +102,10 @@ Important notes:
   - backgrounds and large panels stay close to edge-to-edge
   - controls and important text get a modest top/cutout offset
   - left/right protection is minimal to avoid wasting screen width on modern hole-punch phones
+- Android launcher flows are explicit to avoid accidental renderer mismatches:
+  - `run_android_emulator.sh` always targets an emulator and exports with `gl_compatibility`
+  - `run_android_phone.sh` always targets a real phone and exports with `mobile`
+  - both restore `project.godot` renderer settings when they finish
 
 Local debug export command:
 
@@ -113,6 +117,36 @@ The resulting APK is written to:
 
 ```bash
 build/android/demo-godot-debug.apk
+```
+
+To export, install, and launch the debug build on a running Android emulator:
+
+```bash
+./run_android_emulator.sh
+```
+
+You can also pass a specific emulator serial:
+
+```bash
+./run_android_emulator.sh emulator-5554
+```
+
+To do the same on a connected Android phone:
+
+```bash
+./run_android_phone.sh
+```
+
+Or target a specific phone serial:
+
+```bash
+./run_android_phone.sh R5CWC44TCJR
+```
+
+The shared deployment implementation lives in:
+
+```bash
+scripts/run_android_target.sh
 ```
 
 ## Testing
@@ -220,6 +254,7 @@ The service account must have access to the Google Play Console app and permissi
 ## Structure
 
 - `project.godot` - project configuration.
+- `AGENTS.md` - project-specific operating notes for future agents.
 - `welcome.tscn` - welcome screen and app entry point.
 - `settings.tscn` - language settings screen.
 - `main.tscn` - gameplay scene (`Node2D` + `Timer`).
@@ -229,4 +264,7 @@ The service account must have access to the Google Play Console app and permissi
 - `scripts/SettingsScreen.gd` - language selection and navigation back to the main menu.
 - `scripts/SafeArea.gd` - safe-area inset helper used by the mobile screens and HUD.
 - `scripts/ExportAndroid.gd` - local debug APK export helper for Android testing.
+- `scripts/run_android_target.sh` - shared Android deploy script used by the explicit emulator/phone wrappers.
 - `scripts/release/` - release pipeline helper scripts for CI bundle generation and Play publishing.
+- `run_android_emulator.sh` - explicit emulator deploy command.
+- `run_android_phone.sh` - explicit real-phone deploy command.
