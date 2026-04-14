@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameSettings="*res://scripts/GameSettings.gd"
+SafeArea="*res://scripts/SafeArea.gd"
 
 [display]
 
@@ -31,5 +32,5 @@ window/stretch/aspect="expand"
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="mobile"

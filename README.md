@@ -1,122 +1,232 @@
 # GameOfLife2D
 
-Simulador 2D del [Juego de la vida de Conway](https://es.wikipedia.org/wiki/Juego_de_la_vida) en Godot 4 con menu de bienvenida, configuracion de idioma y una base adaptada a pruebas moviles.
+A Godot 4 tribute to [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life), with a mobile-oriented welcome flow, language settings, and an Android testing/export baseline.
 
-## Requisitos
+## Requirements
 
-- [Godot 4.x](https://godotengine.org/download/) (probado con 4.6.x).
+- [Godot 4.x](https://godotengine.org/download/) (tested with 4.6.x).
 
-## Estado actual
+## Current state
 
-El proyecto ahora tiene estas piezas principales:
+The project currently includes:
 
-- Pantalla de bienvenida.
-- Pantalla de configuracion con selector de idioma.
-- Escena principal del juego.
-- Tablero dinamico: mantiene un tamano de celda estable y calcula cuantas columnas y filas caben en el espacio disponible.
-- Patrones iniciales fijos para depuracion visual del tablero.
-- Soporte basico para export Android y prueba en emulador.
+- A mobile-friendly welcome screen.
+- A settings screen with language selection.
+- A main gameplay scene for the cellular automaton.
+- A dynamic board that keeps cell size stable while adapting rows and columns to the available viewport space.
+- Fixed seed patterns for deterministic visual verification.
+- Local Android export support and emulator testing.
 
-## Cómo ejecutar y ver el juego
+## Running the project
 
-### Opción A: desde el editor de Godot (recomendado)
+### Option A: from the Godot editor
 
-1. Abre la aplicación **Godot** (descarga desde [godotengine.org](https://godotengine.org/download/) si aún no la tienes).
-2. En el **Project Manager** (pantalla inicial):
-   - Pulsa **Import** y elige la carpeta del clon (la que contiene `project.godot`), o
-   - Pulsa **Scan** y añade el directorio padre para que aparezca este proyecto en la lista.
-3. Selecciona **GameOfLife2D** y pulsa **Edit** para abrir el editor.
-4. Para **ejecutar el juego**, usa una de estas acciones:
-   - Tecla **F5**, o
-   - Botón **Play** (triángulo verde) arriba a la derecha, o
-   - menú **Project → Run Project**.
+1. Open **Godot**.
+2. In the **Project Manager**:
+   - Click **Import** and choose the project directory that contains `project.godot`, or
+   - Click **Scan** and add the parent directory so the project appears in the list.
+3. Select **GameOfLife2D** and click **Edit**.
+4. Run the game with one of the following:
+   - `F5`
+   - the **Play** button in the top-right corner
+   - **Project -> Run Project**
 
-Se abrirá una **ventana del juego** (no solo el editor). Ahí es donde “corre” la simulación.
+Godot will open a separate game window. That window is the actual running game.
 
-### Qué deberías ver
+### What you should see
 
-- Primero, una **pantalla de bienvenida** con botones para comenzar, abrir configuracion o salir.
-- Al entrar al juego, una **rejilla** de celdas con patrones iniciales visibles.
-- Arriba, un **panel** con botones: Paso, Play/Pausar, Limpiar, Aleatorio, Patron, Menu, el deslizador **Velocidad**, el texto **Gen: N** y **Vivas: N**.
+- First, a welcome screen with a retro pixel-art presentation.
+- Then, after starting the game, a visible board with seeded Conway patterns.
+- A HUD at the top with controls for stepping, playing, clearing, randomizing, reseeding, changing speed, and returning to the menu.
 
-### Probar que funciona en unos segundos
+### Quick verification
 
-1. Pulsa **Comenzar** en la bienvenida.
-2. Verifica que el tablero muestra celdas vivas desde el inicio.
-3. Pulsa **Paso** varias veces: la rejilla cambia según las reglas del Juego de la vida.
-4. Pulsa **Play** o **Pausar** para controlar la simulación. Ajusta **Velocidad** si va muy rápido o lento.
-5. Usa **Patron** para restaurar un conjunto fijo de patrones visibles.
-6. **Limpiar** deja el tablero vacío; **Aleatorio** rellena celdas al azar.
+1. Press **Start** on the welcome screen.
+2. Confirm that the board shows live cells immediately.
+3. Press **Step** a few times and watch the board change.
+4. Press **Play** or **Pause** to control continuous simulation.
+5. Use **Pattern** to restore the fixed demo seeds.
+6. Use **Clear** to empty the board or **Random** to repopulate it.
 
-Para **cerrar** la ventana del juego, cierra esa ventana o vuelve al editor y pulsa el botón cuadrado **Stop** (o **F8**).
+To close the game window, close that window directly or return to the editor and press **Stop** (`F8`).
 
-### Opción B: desde la terminal
+### Option B: from the terminal
 
-Con Godot instalado y el comando `godot` en el `PATH` (por ejemplo tras `brew install --cask godot` en macOS), puedes abrir el proyecto así:
+If `godot` is available in your `PATH`, you can open the project like this:
 
 ```bash
-cd /ruta/al/demo-godot
+cd /path/to/demo-godot
 godot --path .
 ```
 
-Eso abre el **editor** con este proyecto; luego pulsa **F5** para ver correr el juego, igual que en la opción A.
+This opens the editor with the project loaded. Press `F5` to run the game.
 
-Durante el desarrollo, la forma habitual de **ver la simulación en marcha** es **F5** (o **Play**) en el editor: Godot lanza la ventana del juego y puedes depurarla desde ahí. Un ejecutable independiente requiere **exportar** el proyecto (menú **Project → Export**), que es un paso aparte.
+## Controls
 
-## Controles
+- **Left click / touch**: toggle or paint cells.
+- **Step**: advance one generation.
+- **Play / Pause**: run or stop continuous simulation.
+- **Clear / Random**: empty the board or fill it randomly.
+- **Pattern**: reseed the deterministic demo patterns.
+- **Menu**: return to the welcome screen.
+- Keyboard shortcuts:
+  - `Space`: play/pause
+  - `N`: step once
+  - `C`: clear
+  - `R`: randomize
 
-- **Clic izquierdo**: activar o desactivar una célula.
-- **Paso**: avanza una generación.
-- **Play / Pausar**: simulación continua (intervalo con **Velocidad**).
-- **Limpiar** / **Aleatorio**: vacía o rellena la rejilla al azar.
-- **Patron**: vuelve a sembrar patrones fijos de prueba.
-- **Menu**: regresa a la bienvenida.
-- Teclas: **Espacio** (play/pausa), **N** (paso), **C** (limpiar), **R** (aleatorio).
+## Board model
 
-## Tablero
+The board implementation follows these principles:
 
-La implementacion del tablero sigue estas ideas:
+- Cell size remains visually stable.
+- Row and column counts are derived from the available viewport area.
+- The board rebuilds when the viewport size changes.
+- Simulation uses two buffers:
+  - `current_grid` for the current generation
+  - `next_grid` for the next generation calculation
+- Startup uses fixed seed patterns so the board is visually verifiable without relying on randomness.
 
-- El tamano visual de cada celda se mantiene estable.
-- El numero de filas y columnas se calcula dinamicamente segun el espacio libre del viewport.
-- El tablero se vuelve a construir cuando cambia el tamano disponible.
-- La simulacion usa dos buffers:
-  - `current_grid` para la generacion actual.
-  - `next_grid` para calcular la siguiente.
-- El arranque usa patrones fijos para que el tablero sea verificable visualmente.
+This makes debugging easier because rendering issues and simulation issues can be tested with deterministic patterns.
 
-Esto evita depender solo de aleatoriedad cuando se depura el dibujo o la logica.
+## Android
 
-## Android / movil
+The project has been tested on both an Android emulator and a real Android phone.
 
-El proyecto se probo en emulador Android.
+Important notes:
 
-Puntos importantes:
+- The project now targets the `mobile` renderer for real Android devices.
+- The current handheld orientation is portrait.
+- A local helper script exists at `scripts/ExportAndroid.gd` for generating a debug APK from the Godot editor context.
+- Safe-area handling is intentionally light:
+  - backgrounds and large panels stay close to edge-to-edge
+  - controls and important text get a modest top/cutout offset
+  - left/right protection is minimal to avoid wasting screen width on modern hole-punch phones
 
-- El proyecto usa `gl_compatibility` para evitar pantalla negra en emulador.
-- La orientacion actual es vertical.
-- Hay una utilidad de export local en `scripts/ExportAndroid.gd` que genera un APK debug desde el editor de Godot.
-
-Comando usado para export local:
+Local debug export command:
 
 ```bash
 godot --headless --editor --path . --script res://scripts/ExportAndroid.gd
 ```
 
-El APK resultante se genera en:
+The resulting APK is written to:
 
 ```bash
 build/android/demo-godot-debug.apk
 ```
 
-## Estructura
+## Testing
 
-- `project.godot` — configuración del proyecto.
-- `welcome.tscn` — pantalla de bienvenida y entrada al juego.
-- `settings.tscn` — pantalla de configuracion para idioma.
-- `main.tscn` — escena del juego (`Node2D` + `Timer`).
-- `scripts/GameSettings.gd` — estado global simple para idioma y textos.
-- `scripts/GameOfLife.gd` — estado de la rejilla, reglas, dibujo, input y HUD.
-- `scripts/WelcomeScreen.gd` — navegación desde la bienvenida a la escena del juego.
-- `scripts/SettingsScreen.gd` — selector de idioma y regreso al menu principal.
-- `scripts/ExportAndroid.gd` — export utilitario de APK debug para pruebas Android locales.
+The test strategy follows a pragmatic Godot approach:
+
+- Keep Conway rule validation deterministic and independent from rendering.
+- Run fast headless tests from the command line.
+- Add a lightweight scene smoke test to confirm the playable scene still boots, seeds the board, and starts simulating.
+
+This repository includes:
+
+- `scripts/GameOfLifeBoard.gd` for pure simulation-rule tests.
+- `tests/test_runner.gd` for headless test execution.
+- `.github/workflows/godot-tests.yml` for CI validation.
+
+Run the tests locally with:
+
+```bash
+godot --headless --path . --script res://tests/test_runner.gd
+```
+
+What the tests currently cover:
+
+- Conway rules for classic patterns such as `blinker` and `block`.
+- Demo pattern seeding.
+- Scene startup smoke checks for `main.tscn`.
+- Safe-area inset math.
+- Language defaults and translation switching.
+
+## Release pipeline
+
+The repository follows a two-phase Android release flow:
+
+1. Build a signed Android App Bundle (`.aab`) and upload it as a GitHub Actions artifact.
+2. Publish that artifact to Google Play in a separate workflow.
+
+This separation keeps bundle generation and store publishing independent, which is safer and easier to audit.
+
+### Phase 1: signed bundle build
+
+The first phase is implemented in:
+
+- `.github/workflows/android-build-release-bundle.yml`
+
+That workflow:
+
+- downloads Godot 4.6.2 and Android export templates
+- configures isolated Godot editor settings for CI
+- materializes the release keystore from GitHub Secrets
+- updates the Android release preset with package name and version values
+- exports a signed `.aab`
+- stores the bundle and release metadata as a GitHub Actions artifact
+
+### Phase 2: publish an existing bundle
+
+The publish phase is implemented in:
+
+- `.github/workflows/android-publish-google-play.yml`
+
+That workflow:
+
+- downloads the artifact generated by phase 1
+- reads the stored release metadata
+- validates the release policy
+- authenticates to Google Cloud / Google Play
+- uploads the `.aab` to the requested Google Play track
+
+The upload logic lives in:
+
+- `scripts/release/upload_play_bundle.py`
+
+### Required GitHub Secrets
+
+The bundle build workflow expects these secrets:
+
+- `ANDROID_UPLOAD_KEYSTORE_BASE64`
+- `ANDROID_UPLOAD_KEYSTORE_PASSWORD`
+- `ANDROID_UPLOAD_KEY_ALIAS`
+- `ANDROID_UPLOAD_KEY_PASSWORD`
+
+Important: for Godot's Android release export, the keystore password and the key password must currently match. The workflow validates this and fails early if they differ.
+
+### Required Google Play configuration
+
+For the publish workflow, configure one of these authentication paths:
+
+1. Workload Identity Federation
+   - `GCP_WORKLOAD_IDENTITY_PROVIDER`
+   - `GCP_SERVICE_ACCOUNT_EMAIL`
+
+2. Service account JSON
+   - `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`
+   - `GCP_SERVICE_ACCOUNT_EMAIL`
+
+The service account must have access to the Google Play Console app and permission to manage releases through the Android Publisher API.
+
+### Suggested release flow
+
+1. Run `Build Android Release Bundle`.
+2. Verify the generated artifact and release metadata.
+3. Run `Publish Existing Bundle To Google Play`.
+4. Start with the `internal` track and `draft` status until the release setup is fully trusted.
+
+## Structure
+
+- `project.godot` - project configuration.
+- `welcome.tscn` - welcome screen and app entry point.
+- `settings.tscn` - language settings screen.
+- `main.tscn` - gameplay scene (`Node2D` + `Timer`).
+- `scripts/GameSettings.gd` - global language state and translated UI text.
+- `scripts/GameOfLife.gd` - board state, rules, drawing, input, and HUD.
+- `scripts/WelcomeScreen.gd` - navigation from the welcome screen to gameplay or settings.
+- `scripts/SettingsScreen.gd` - language selection and navigation back to the main menu.
+- `scripts/SafeArea.gd` - safe-area inset helper used by the mobile screens and HUD.
+- `scripts/ExportAndroid.gd` - local debug APK export helper for Android testing.
+- `scripts/release/` - release pipeline helper scripts for CI bundle generation and Play publishing.

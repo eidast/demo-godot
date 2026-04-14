@@ -13,7 +13,7 @@ func _wait_and_export() -> void:
 	var platform := EditorExportPlatformAndroid.new()
 	var preset := platform.create_preset()
 
-	preset.set("package/unique_name", "com.eidast.gameoflife2d")
+	preset.set("package/unique_name", "com.starquantix.gameoflife")
 	preset.set("package/name", "Game of Life")
 	preset.set("package/signed", true)
 	preset.set("architectures/arm64-v8a", true)

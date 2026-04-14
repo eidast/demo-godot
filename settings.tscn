@@ -1,6 +1,51 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/SettingsScreen.gd" id="1_gl5lr"]
+[ext_resource type="FontFile" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.0901961, 0.117647, 0.0980392, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.454902, 0.831373, 0.352941, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.152941, 0.211765, 0.152941, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.596078, 0.87451, 0.423529, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.211765, 0.282353, 0.211765, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.788235, 0.929412, 0.45098, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
 
 [node name="SettingsScreen" type="Control"]
 layout_mode = 3
@@ -18,7 +63,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0666667, 0.0745098, 0.101961, 1)
+color = Color(0.0352941, 0.0509804, 0.0431373, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="Background"]
 layout_mode = 1
@@ -27,32 +72,66 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 120
-theme_override_constants/margin_top = 72
-theme_override_constants/margin_right = 120
-theme_override_constants/margin_bottom = 72
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/MarginContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="Background/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 34
 
-[node name="TitleLabel" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+[node name="Panel" type="PanelContainer" parent="Background/MarginContainer/CenterContainer"]
+custom_minimum_size = Vector2(0, 420)
 layout_mode = 2
-theme_override_font_sizes/font_size = 64
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="PanelMargin" type="MarginContainer" parent="Background/MarginContainer/CenterContainer/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="TitleLabel" type="Label" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 36
+modulate = Color(0.905882, 0.980392, 0.74902, 1)
 text = "Configuracion"
 
-[node name="LanguageLabel" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+[node name="LanguageLabel" type="Label" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 36
-text = "Idioma"
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+modulate = Color(0.72549, 0.862745, 0.643137, 1)
+text = "Language"
 
-[node name="LanguageSelector" type="OptionButton" parent="Background/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(420, 76)
+[node name="LanguageSelector" type="OptionButton" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
+custom_minimum_size = Vector2(0, 68)
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
 
-[node name="BackButton" type="Button" parent="Background/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 76)
+[node name="LanguageNoteLabel" type="Label" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "Volver"
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+modulate = Color(0.839216, 0.92549, 0.611765, 1)
+text = "The change applies immediately to menus and to the in-game interface."
+autowrap_mode = 3
+
+[node name="BackButton" type="Button" parent="Background/MarginContainer/CenterContainer/Panel/PanelMargin/VBoxContainer"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
+text = "Back"

@@ -1,0 +1,182 @@
+name: Build Android Release Bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_name:
+        description: Android application ID
+        required: true
+        default: com.starquantix.gameoflife
+        type: string
+      build_name:
+        description: Release version name
+        required: false
+        type: string
+      build_number:
+        description: Release version code
+        required: false
+        type: string
+      artifact_name:
+        description: Artifact name for the signed bundle
+        required: true
+        default: android-release-bundle
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-build-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-android-release:
+    runs-on: ubuntu-latest
+    environment: google-play
+    env:
+      GODOT_VERSION: "4.6.2"
+      ANDROID_UPLOAD_KEYSTORE_BASE64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+      ANDROID_UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+      ANDROID_UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+      ANDROID_UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Validate required secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required=(
+            ANDROID_UPLOAD_KEYSTORE_BASE64
+            ANDROID_UPLOAD_KEYSTORE_PASSWORD
+            ANDROID_UPLOAD_KEY_ALIAS
+            ANDROID_UPLOAD_KEY_PASSWORD
+          )
+
+          for key in "${required[@]}"; do
+            if [[ -z "${!key:-}" ]]; then
+              echo "Missing required secret: ${key}" >&2
+              exit 1
+            fi
+          done
+
+          if [[ "$ANDROID_UPLOAD_KEYSTORE_PASSWORD" != "$ANDROID_UPLOAD_KEY_PASSWORD" ]]; then
+            echo "Godot Android export supports a single release keystore password." >&2
+            echo "ANDROID_UPLOAD_KEYSTORE_PASSWORD and ANDROID_UPLOAD_KEY_PASSWORD must match." >&2
+            exit 1
+          fi
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install required Android SDK packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdkmanager \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.1" \
+            "ndk;28.1.13356709" \
+            "cmdline-tools;latest"
+
+      - name: Download Godot editor and export templates
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p "$RUNNER_TEMP/godot"
+          curl -L \
+            "https://sourceforge.net/projects/godot-engine.mirror/files/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip/download" \
+            -o "$RUNNER_TEMP/godot/editor.zip"
+          unzip -q "$RUNNER_TEMP/godot/editor.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+
+          mkdir -p "$RUNNER_TEMP/godot-data/godot/export_templates/${GODOT_VERSION}.stable"
+          curl -L \
+            "https://sourceforge.net/projects/godot-engine.mirror/files/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz/download" \
+            -o "$RUNNER_TEMP/godot/export_templates.tpz"
+          unzip -q "$RUNNER_TEMP/godot/export_templates.tpz" -d "$RUNNER_TEMP/godot-data/godot/export_templates/${GODOT_VERSION}.stable"
+
+      - name: Write isolated Godot editor settings
+        shell: bash
+        env:
+          XDG_DATA_HOME: ${{ runner.temp }}/godot-data
+        run: |
+          set -euo pipefail
+          python3 scripts/release/write_godot_editor_settings.py \
+            --output "$XDG_DATA_HOME/godot/editor_settings-4.6.tres" \
+            --java-sdk-path "$JAVA_HOME" \
+            --android-sdk-path "${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+
+      - name: Derive release version
+        id: version
+        shell: bash
+        run: |
+          python3 scripts/release/derive_android_release_version.py \
+            --github-output "$GITHUB_OUTPUT" \
+            --build-name "${{ inputs.build_name }}" \
+            --build-number "${{ inputs.build_number }}"
+
+      - name: Materialize upload keystore
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "$ANDROID_UPLOAD_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release-upload.jks"
+
+      - name: Update Android release preset
+        shell: bash
+        run: |
+          python3 scripts/release/update_android_release_preset.py \
+            --package-name "${{ inputs.package_name }}" \
+            --version-name "${{ steps.version.outputs.build_name }}" \
+            --version-code "${{ steps.version.outputs.build_number }}" \
+            --export-path "build/android/gameoflife-release.aab"
+
+      - name: Build signed Android App Bundle
+        shell: bash
+        env:
+          XDG_DATA_HOME: ${{ runner.temp }}/godot-data
+          GODOT_ANDROID_KEYSTORE_RELEASE_PATH: ${{ runner.temp }}/release-upload.jks
+          GODOT_ANDROID_KEYSTORE_RELEASE_USER: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+          GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/android dist/android-release
+          "$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" \
+            --headless \
+            --path . \
+            --export-release "Android Release Bundle" \
+            build/android/gameoflife-release.aab
+
+      - name: Write release metadata
+        shell: bash
+        run: |
+          cp build/android/gameoflife-release.aab dist/android-release/gameoflife-release.aab
+          python3 scripts/release/write_release_metadata.py \
+            --output dist/android-release/release-metadata.json \
+            --package-name "${{ inputs.package_name }}" \
+            --version-name "${{ steps.version.outputs.build_name }}" \
+            --build-number "${{ steps.version.outputs.build_number }}" \
+            --git-sha "${{ github.sha }}" \
+            --ref-name "${{ github.ref_name }}" \
+            --source-run-id "${{ github.run_id }}" \
+            --source-repo "${{ github.repository }}" \
+            --source-run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact_name }}
+          path: dist/android-release
+          if-no-files-found: error
+          retention-days: 30

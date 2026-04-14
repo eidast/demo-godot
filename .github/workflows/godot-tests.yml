@@ -1,0 +1,41 @@
+name: Godot Tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GODOT_VERSION: "4.6.2"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Download Godot editor
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot"
+          curl -L \
+            "https://sourceforge.net/projects/godot-engine.mirror/files/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip/download" \
+            -o "$RUNNER_TEMP/godot/editor.zip"
+          unzip -q "$RUNNER_TEMP/godot/editor.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+
+      - name: Run headless test suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" \
+            --headless \
+            --path . \
+            --script res://tests/test_runner.gd

@@ -1,6 +1,81 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/WelcomeScreen.gd" id="1_q27ei"]
+[ext_resource type="FontFile" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hero"]
+bg_color = Color(0.0784314, 0.101961, 0.0823529, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.454902, 0.831373, 0.352941, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info"]
+bg_color = Color(0.109804, 0.137255, 0.113725, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.27451, 0.72549, 0.333333, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.152941, 0.211765, 0.152941, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.596078, 0.87451, 0.423529, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.211765, 0.282353, 0.211765, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.788235, 0.929412, 0.45098, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+bg_color = Color(0.101961, 0.160784, 0.101961, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.360784, 0.807843, 0.403922, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
 
 [node name="WelcomeScreen" type="Control"]
 layout_mode = 3
@@ -18,7 +93,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0666667, 0.0745098, 0.101961, 1)
+color = Color(0.0352941, 0.0509804, 0.0431373, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="Background"]
 layout_mode = 1
@@ -27,56 +102,157 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 96
-theme_override_constants/margin_top = 48
-theme_override_constants/margin_right = 96
-theme_override_constants/margin_bottom = 48
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/MarginContainer"]
+[node name="ContentColumn" type="VBoxContainer" parent="Background/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 30
+size_flags_vertical = 3
+theme_override_constants/separation = 18
 
-[node name="TitleLabel" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+[node name="HeroPanel" type="PanelContainer" parent="Background/MarginContainer/ContentColumn"]
+custom_minimum_size = Vector2(0, 292)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hero")
+
+[node name="HeroMargin" type="MarginContainer" parent="Background/MarginContainer/ContentColumn/HeroPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HeroColumn" type="VBoxContainer" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="EraLabel" type="Label" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 23
+modulate = Color(0.839216, 0.92549, 0.611765, 1)
+text = "JOHN HORTON CONWAY  1970"
+
+[node name="TitleLabel" type="Label" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 84
+modulate = Color(0.905882, 0.980392, 0.74902, 1)
 text = "Game of Life"
 
-[node name="SubtitleLabel" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+[node name="SubtitleLabel" type="Label" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 42
-text = "Tu primer simulador en Godot"
-
-[node name="DescriptionLabel" type="Label" parent="Background/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 34
-text = "Activa celdas, ejecuta la simulacion y observa como evolucionan los patrones segun las reglas de Conway."
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 31
+modulate = Color(0.596078, 0.87451, 0.423529, 1)
+text = "A pixel-art tribute to the cellular automaton"
 autowrap_mode = 3
 
-[node name="ControlsLabel" type="Label" parent="Background/MarginContainer/VBoxContainer"]
+[node name="InfoPanel" type="PanelContainer" parent="Background/MarginContainer/ContentColumn"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "Controles: clic izquierdo para cambiar celdas, Espacio para play/pausa, N para avanzar."
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_info")
+
+[node name="InfoMargin" type="MarginContainer" parent="Background/MarginContainer/ContentColumn/InfoPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="InfoColumn" type="VBoxContainer" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="DescriptionLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+modulate = Color(0.913725, 0.956863, 0.866667, 1)
+text = "A zero-player game where a single seed pattern can produce generations, oscillators, and spaceships across an infinite grid."
 autowrap_mode = 3
 
-[node name="ButtonsRow" type="HBoxContainer" parent="Background/MarginContainer/VBoxContainer"]
+[node name="TributeLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
-theme_override_constants/separation = 24
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 23
+modulate = Color(0.72549, 0.862745, 0.643137, 1)
+text = "Based on Conway's Game of Life, devised by John Horton Conway in 1970. This cover links to the historical Wikipedia reference."
+autowrap_mode = 3
 
-[node name="StartButton" type="Button" parent="Background/MarginContainer/VBoxContainer/ButtonsRow"]
-custom_minimum_size = Vector2(260, 84)
+[node name="RulesTitleLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "Comenzar"
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+modulate = Color(0.905882, 0.980392, 0.74902, 1)
+text = "Simplified rules"
 
-[node name="SettingsButton" type="Button" parent="Background/MarginContainer/VBoxContainer/ButtonsRow"]
-custom_minimum_size = Vector2(260, 84)
+[node name="RulesBodyLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "Configuracion"
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 23
+modulate = Color(0.839216, 0.92549, 0.611765, 1)
+text = "1. A live cell with fewer than 2 neighbours dies.\n2. A live cell with 2 or 3 neighbours survives.\n3. A live cell with more than 3 neighbours dies.\n4. A dead cell with exactly 3 neighbours becomes alive."
+autowrap_mode = 3
 
-[node name="ExitButton" type="Button" parent="Background/MarginContainer/VBoxContainer/ButtonsRow"]
-custom_minimum_size = Vector2(260, 84)
+[node name="ControlsLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
-text = "Salir"
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 23
+modulate = Color(0.839216, 0.92549, 0.611765, 1)
+text = "Mobile: tap cells to activate them. Use the panel to pause, step, clear, or seed classic patterns."
+autowrap_mode = 3
+
+[node name="ReferenceButton" type="Button" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
+custom_minimum_size = Vector2(0, 74)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 23
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
+text = "Open Wikipedia"
+
+[node name="ButtonsColumn" type="VBoxContainer" parent="Background/MarginContainer/ContentColumn"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="StartButton" type="Button" parent="Background/MarginContainer/ContentColumn/ButtonsColumn"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
+text = "Start"
+
+[node name="SettingsButton" type="Button" parent="Background/MarginContainer/ContentColumn/ButtonsColumn"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="Background/MarginContainer/ContentColumn/ButtonsColumn"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
+text = "Exit"

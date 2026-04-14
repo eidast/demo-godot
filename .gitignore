@@ -10,10 +10,12 @@ data_*/
 mono_crash.*.json
 
 # Builds / exports
-export_presets.cfg
 export/
 build/
 *.idsig
+dist/
+android/release-keystore.jks
+android/key.properties
 
 # OS / editor
 .DS_Store
@@ -22,3 +24,7 @@ build/
 *~
 *.import
 *.uid
+
+# Python helpers
+__pycache__/
+*.pyc
