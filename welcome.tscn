@@ -108,28 +108,35 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="ContentColumn" type="VBoxContainer" parent="Background/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Background/MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ContentColumn" type="VBoxContainer" parent="Background/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 18
 
-[node name="HeroPanel" type="PanelContainer" parent="Background/MarginContainer/ContentColumn"]
+[node name="HeroPanel" type="PanelContainer" parent="Background/MarginContainer/ScrollContainer/ContentColumn"]
 custom_minimum_size = Vector2(0, 292)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hero")
 
-[node name="HeroMargin" type="MarginContainer" parent="Background/MarginContainer/ContentColumn/HeroPanel"]
+[node name="HeroMargin" type="MarginContainer" parent="Background/MarginContainer/ScrollContainer/ContentColumn/HeroPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="HeroColumn" type="VBoxContainer" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin"]
+[node name="HeroColumn" type="VBoxContainer" parent="Background/MarginContainer/ScrollContainer/ContentColumn/HeroPanel/HeroMargin"]
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="EraLabel" type="Label" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
+[node name="EraLabel" type="Label" parent="Background/MarginContainer/ScrollContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font_body")
 theme_override_font_sizes/font_size = 32
@@ -137,14 +144,14 @@ theme_override_constants/outline_size = 1
 modulate = Color(0.839216, 0.92549, 0.611765, 1)
 text = "JOHN HORTON CONWAY  1970"
 
-[node name="TitleLabel" type="Label" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
+[node name="TitleLabel" type="Label" parent="Background/MarginContainer/ScrollContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 84
 modulate = Color(0.905882, 0.980392, 0.74902, 1)
 text = "Game of Life"
 
-[node name="SubtitleLabel" type="Label" parent="Background/MarginContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
+[node name="SubtitleLabel" type="Label" parent="Background/MarginContainer/ScrollContainer/ContentColumn/HeroPanel/HeroMargin/HeroColumn"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font_body")
 theme_override_font_sizes/font_size = 42
@@ -153,23 +160,23 @@ modulate = Color(0.596078, 0.87451, 0.423529, 1)
 text = "A pixel-art tribute to the cellular automaton"
 autowrap_mode = 3
 
-[node name="InfoPanel" type="PanelContainer" parent="Background/MarginContainer/ContentColumn"]
+[node name="InfoPanel" type="PanelContainer" parent="Background/MarginContainer/ScrollContainer/ContentColumn"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_info")
 
-[node name="InfoMargin" type="MarginContainer" parent="Background/MarginContainer/ContentColumn/InfoPanel"]
+[node name="InfoMargin" type="MarginContainer" parent="Background/MarginContainer/ScrollContainer/ContentColumn/InfoPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="InfoColumn" type="VBoxContainer" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin"]
+[node name="InfoColumn" type="VBoxContainer" parent="Background/MarginContainer/ScrollContainer/ContentColumn/InfoPanel/InfoMargin"]
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="DescriptionLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
+[node name="DescriptionLabel" type="Label" parent="Background/MarginContainer/ScrollContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font_body")
 theme_override_font_sizes/font_size = 32
@@ -178,7 +185,7 @@ modulate = Color(0.913725, 0.956863, 0.866667, 1)
 text = "A zero-player game where a single seed pattern can produce generations, oscillators, and spaceships across an infinite grid."
 autowrap_mode = 3
 
-[node name="RulesTitleLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
+[node name="RulesTitleLabel" type="Label" parent="Background/MarginContainer/ScrollContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font_body")
 theme_override_font_sizes/font_size = 34
@@ -186,7 +193,7 @@ theme_override_constants/outline_size = 1
 modulate = Color(0.905882, 0.980392, 0.74902, 1)
 text = "Simplified rules"
 
-[node name="RulesBodyLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
+[node name="RulesBodyLabel" type="Label" parent="Background/MarginContainer/ScrollContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font_body")
 theme_override_font_sizes/font_size = 30
@@ -195,7 +202,7 @@ modulate = Color(0.839216, 0.92549, 0.611765, 1)
 text = "1. A live cell with fewer than 2 neighbours dies.\n2. A live cell with 2 or 3 neighbours survives.\n3. A live cell with more than 3 neighbours dies.\n4. A dead cell with exactly 3 neighbours becomes alive."
 autowrap_mode = 3
 
-[node name="ControlsLabel" type="Label" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
+[node name="ControlsLabel" type="Label" parent="Background/MarginContainer/ScrollContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font_body")
 theme_override_font_sizes/font_size = 30
@@ -204,7 +211,7 @@ modulate = Color(0.839216, 0.92549, 0.611765, 1)
 text = "Mobile: tap cells to activate them. Use the panel to play, pause, clear, or randomize the simulation."
 autowrap_mode = 3
 
-[node name="ReferenceButton" type="Button" parent="Background/MarginContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
+[node name="ReferenceButton" type="Button" parent="Background/MarginContainer/ScrollContainer/ContentColumn/InfoPanel/InfoMargin/InfoColumn"]
 custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -217,11 +224,11 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
 text = "Open Wikipedia"
 
-[node name="ButtonsColumn" type="VBoxContainer" parent="Background/MarginContainer/ContentColumn"]
+[node name="ButtonsColumn" type="VBoxContainer" parent="Background/MarginContainer/ScrollContainer/ContentColumn"]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="StartButton" type="Button" parent="Background/MarginContainer/ContentColumn/ButtonsColumn"]
+[node name="StartButton" type="Button" parent="Background/MarginContainer/ScrollContainer/ContentColumn/ButtonsColumn"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -234,7 +241,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
 text = "Start"
 
-[node name="SettingsButton" type="Button" parent="Background/MarginContainer/ContentColumn/ButtonsColumn"]
+[node name="SettingsButton" type="Button" parent="Background/MarginContainer/ScrollContainer/ContentColumn/ButtonsColumn"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -247,7 +254,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 theme_override_styles/focus = SubResource("StyleBoxFlat_button_hover")
 text = "Settings"
 
-[node name="ExitButton" type="Button" parent="Background/MarginContainer/ContentColumn/ButtonsColumn"]
+[node name="ExitButton" type="Button" parent="Background/MarginContainer/ScrollContainer/ContentColumn/ButtonsColumn"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
