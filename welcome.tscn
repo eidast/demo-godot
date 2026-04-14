@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/WelcomeScreen.gd" id="1_q27ei"]
 [ext_resource type="FontFile" path="res://assets/fonts/Tiny5-Regular.ttf" id="2_font"]
 [ext_resource type="FontFile" path="res://assets/fonts/VT323-Regular.ttf" id="3_font_body"]
+[ext_resource type="Script" path="res://scripts/WelcomeMusicPlayer.gd" id="4_music"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hero"]
 bg_color = Color(0.0784314, 0.101961, 0.0823529, 1)
@@ -86,6 +87,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_q27ei")
+
+[node name="WelcomeMusic" type="AudioStreamPlayer" parent="."]
+script = ExtResource("4_music")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1

@@ -76,6 +76,25 @@ func _test_game_scene_smoke() -> void:
 	_assert_true(scene.live_cells > 0, "An empty board step should reseed the demo pattern.")
 	_assert_true(scene.generation == 0 or scene.generation == 1, "Reseed path should keep generation bounded.")
 
+	scene.activate_fun_mode()
+	_assert_true(scene.is_fun_mode, "FUN mode should stay enabled after activation.")
+	_assert_eq(scene.speed_slider.value, scene.speed_slider.max_value, "FUN mode should jump to max speed.")
+
+	scene.clear_grid()
+	scene.is_fun_mode = true
+	scene._set_cell(scene.current_grid, 3, 3, 1)
+	scene._set_cell(scene.current_grid, 4, 3, 1)
+	scene._set_cell(scene.current_grid, 3, 4, 1)
+	scene._set_cell(scene.current_grid, 4, 4, 1)
+	scene.live_cells = scene._count_live_cells(scene.current_grid)
+	scene._prime_fun_mode_tracking()
+	scene.fun_repeat_generations = scene.FUN_REPEAT_THRESHOLD - 1
+	scene.step_simulation()
+	_assert_eq(scene.generation, 0, "FUN mode should restart from a fresh random board after a repeated pattern threshold.")
+	_assert_true(scene.live_cells > 0, "FUN mode restart should leave a visible randomized board.")
+	_assert_eq(scene.fun_repeat_generations, 0, "FUN mode restart should reset the repeat counter.")
+	_assert_true(scene.is_running, "FUN mode restart should keep the simulation running.")
+
 	root.remove_child(scene)
 	scene.free()
 	await process_frame

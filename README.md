@@ -40,7 +40,7 @@ Godot will open a separate game window. That window is the actual running game.
 
 - First, a welcome screen with a retro pixel-art presentation.
 - Then, after starting the game, a visible random board that starts simulating immediately.
-- A HUD at the top with controls for play/pause, clearing, randomizing, changing speed, and returning to the menu.
+- A HUD at the top with controls for play/pause, FUN mode, randomizing, changing speed, and returning to the menu.
 
 ### Quick verification
 
@@ -67,7 +67,7 @@ This opens the editor with the project loaded. Press `F5` to run the game.
 
 - **Left click / touch**: toggle or paint cells.
 - **Play / Pause**: run or stop continuous simulation.
-- **Clear / Random**: empty the board or fill it randomly.
+- **FUN / Random**: kick off continuous high-speed random play, or fill the board randomly.
 - **Menu**: return to the welcome screen.
 - Keyboard shortcuts:
   - `Space`: play/pause

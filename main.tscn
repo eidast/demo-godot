@@ -1,9 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/GameOfLife.gd" id="1_ufmwb"]
+[ext_resource type="Script" path="res://scripts/GameplayMusicPlayer.gd" id="2_music"]
 
 [node name="GameOfLife" type="Node2D"]
 script = ExtResource("1_ufmwb")
+
+[node name="GameplayMusic" type="AudioStreamPlayer" parent="."]
+script = ExtResource("2_music")
 
 [node name="SimulationTimer" type="Timer" parent="."]
 wait_time = 0.2

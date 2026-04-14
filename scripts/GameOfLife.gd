@@ -5,6 +5,7 @@ const UI_MARGIN := 16.0
 const UI_PANEL_HEIGHT := 182.0
 const MIN_GRID_WIDTH := 20
 const MIN_GRID_HEIGHT := 28
+const FUN_REPEAT_THRESHOLD := 50
 
 const DEAD_COLOR := Color("12202d")
 const LIVE_COLOR := Color("78f3ff")
@@ -20,6 +21,7 @@ const HUD_TEXT_SECONDARY := Color("9be06b")
 const UI_FONT := preload("res://assets/fonts/VT323-Regular.ttf")
 
 @onready var simulation_timer: Timer = $SimulationTimer
+@onready var gameplay_music: AudioStreamPlayer = $GameplayMusic
 
 var current_grid: PackedInt32Array = PackedInt32Array()
 var next_grid: PackedInt32Array = PackedInt32Array()
@@ -33,6 +35,10 @@ var board_origin := Vector2.ZERO
 var board_size := Vector2.ZERO
 var drag_paint_value := -1
 var last_touched_cell := Vector2i(-1, -1)
+var is_fun_mode := false
+var fun_repeat_generations := 0
+var previous_grid_state: PackedInt32Array = PackedInt32Array()
+var two_steps_back_grid_state: PackedInt32Array = PackedInt32Array()
 
 var generation_label: Label
 var live_cells_label: Label
@@ -309,8 +315,17 @@ func step_simulation() -> void:
 	generation += 1
 
 	if live_cells == 0:
+		if is_fun_mode:
+			_restart_fun_mode_cycle()
+			return
 		_seed_demo_pattern()
 		return
+
+	if is_fun_mode:
+		_track_fun_mode_progress()
+		if fun_repeat_generations >= FUN_REPEAT_THRESHOLD:
+			_restart_fun_mode_cycle()
+			return
 
 	_update_stats_labels()
 	queue_redraw()
@@ -320,6 +335,7 @@ func clear_grid() -> void:
 	_clear_grid_data()
 	generation = 0
 	live_cells = 0
+	_reset_fun_mode_tracking()
 	_update_stats_labels()
 	queue_redraw()
 
@@ -334,6 +350,7 @@ func randomize_grid() -> void:
 
 	live_cells = new_live_cells
 	generation = 0
+	_prime_fun_mode_tracking()
 	_update_stats_labels()
 	queue_redraw()
 
@@ -427,11 +444,12 @@ func _update_stats_labels() -> void:
 		generation_label.text = GameSettings.get_text("generation") % generation
 	if live_cells_label != null:
 		live_cells_label.text = GameSettings.get_text("live_cells") % live_cells
+	_update_music_state()
 
 
 func _apply_translations() -> void:
 	if clear_button != null:
-		clear_button.text = GameSettings.get_text("clear")
+		clear_button.text = GameSettings.get_text("fun")
 	if random_button != null:
 		random_button.text = GameSettings.get_text("random")
 	if back_button != null:
@@ -451,15 +469,20 @@ func _on_simulation_timer_timeout() -> void:
 
 
 func _on_clear_pressed() -> void:
-	clear_grid()
-	is_running = false
-	simulation_timer.stop()
-	_update_play_pause_label()
+	activate_fun_mode()
 
 
 func _on_random_pressed() -> void:
 	randomize_grid()
 	_start_simulation()
+
+
+func activate_fun_mode() -> void:
+	is_fun_mode = true
+	if speed_slider != null:
+		speed_slider.value = speed_slider.max_value
+		_on_speed_slider_value_changed(speed_slider.value)
+	_restart_fun_mode_cycle()
 
 
 func _begin_paint_at_position(pointer_position: Vector2) -> void:
@@ -485,6 +508,7 @@ func _paint_at_position(pointer_position: Vector2) -> void:
 	_set_cell(current_grid, cell.x, cell.y, drag_paint_value)
 	live_cells = _count_live_cells(current_grid)
 	last_touched_cell = cell
+	_prime_fun_mode_tracking()
 	_update_stats_labels()
 	queue_redraw()
 
@@ -570,6 +594,33 @@ func _seed_initial_state() -> void:
 		_seed_demo_pattern()
 
 
+func _restart_fun_mode_cycle() -> void:
+	randomize_grid()
+	_start_simulation()
+
+
+func _track_fun_mode_progress() -> void:
+	var matches_previous := previous_grid_state.size() == current_grid.size() and current_grid == previous_grid_state
+	var matches_two_steps_back := two_steps_back_grid_state.size() == current_grid.size() and current_grid == two_steps_back_grid_state
+	if matches_previous or matches_two_steps_back:
+		fun_repeat_generations += 1
+	else:
+		fun_repeat_generations = 0
+	two_steps_back_grid_state = previous_grid_state.duplicate()
+	previous_grid_state = current_grid.duplicate()
+
+
+func _reset_fun_mode_tracking() -> void:
+	fun_repeat_generations = 0
+	previous_grid_state = PackedInt32Array()
+	two_steps_back_grid_state = PackedInt32Array()
+
+
+func _prime_fun_mode_tracking() -> void:
+	_reset_fun_mode_tracking()
+	previous_grid_state = current_grid.duplicate()
+
+
 func _update_safe_area() -> void:
 	var viewport_size := Vector2i(get_viewport_rect().size)
 	var raw_insets: Dictionary = SafeArea.get_insets(viewport_size)
@@ -584,3 +635,10 @@ func _update_safe_area() -> void:
 		hud_margin.add_theme_constant_override("margin_top", safe_insets["top"])
 		hud_margin.add_theme_constant_override("margin_right", safe_insets["right"])
 		hud_margin.add_theme_constant_override("margin_bottom", safe_insets["bottom"])
+
+
+func _update_music_state() -> void:
+	if gameplay_music == null:
+		return
+	if gameplay_music.has_method("update_state"):
+		gameplay_music.call("update_state", live_cells, grid_width * grid_height, is_running)
